@@ -6,8 +6,31 @@
 <h1 class="text-3xl font-bold mb-6">Crear Nuevo Tema</h1>
 <form method="post" class="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <div class="mb-4">
+        {{ form.titulo.label_tag }}
+        {{ form.titulo }}
+        {{ form.titulo.errors }}
+    </div>
+    <div class="mb-4">
+        {{ form.contenido.label_tag }}
+        {{ form.contenido }}
+        {{ form.contenido.errors }}
+        <p class="text-sm text-gray-500 mt-1">Puedes usar Markdown para dar formato al contenido.</p>
+    </div>
     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Crear</button>
 </form>
 <a href="{% url 'lista_temas' %}" class="mt-6 inline-block text-blue-500 hover:underline">← Volver a la Lista de Temas</a>
+
+<!-- Incluir los archivos de EasyMDE -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'etica_app/css/easymde.min.css' %}">
+<script src="{% static 'etica_app/js/easymde.min.js' %}"></script>
+
+<script>
+    var easyMDE = new EasyMDE({
+        element: document.getElementById("id_contenido"),
+        spellChecker: false,
+    });
+</script>
 {% endblock %}

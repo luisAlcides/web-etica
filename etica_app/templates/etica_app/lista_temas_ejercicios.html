@@ -1,0 +1,17 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Temas - Ejercicios{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Temas Disponibles para Ejercicios</h1>
+
+<ul class="list-disc pl-5">
+    {% for tema in temas %}
+    <li class="mb-2">
+        <a href="{% url 'realizar_examen' tema.id %}" class="text-blue-500 hover:underline">{{ tema.titulo }}</a>
+    </li>
+    {% empty %}
+    <li>No hay temas con ejercicios disponibles.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

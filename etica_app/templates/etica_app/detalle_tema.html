@@ -1,5 +1,7 @@
 {% extends 'etica_app/base.html' %}
 
+{% load markdown_extras %}  <!-- Cargar el filtro personalizado -->
+
 {% block titulo %}{{ tema.titulo }} - Blog{% endblock %}
 
 {% block contenido %}
@@ -8,7 +10,7 @@
         <h1 class="text-4xl font-bold mb-4">{{ tema.titulo }}</h1>
         <p class="text-gray-600 text-sm mb-6">Publicado el {{ tema.creado_en|date:"d M Y H:i" }}</p>
         <div class="prose">
-            {{ tema.contenido|linebreaks }}
+            {{ tema.contenido|markdown }}
         </div>
         {% if user.is_staff %}
         <div class="mt-6 flex space-x-4">

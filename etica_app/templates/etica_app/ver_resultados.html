@@ -1,0 +1,19 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Mis Resultados{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Mis Resultados</h1>
+
+<ul class="list-disc pl-5">
+    {% for resultado in resultados %}
+    <li class="mb-2">
+        <strong>{{ resultado.tema.titulo }}</strong> - {{ resultado.puntaje }}% - {{ resultado.fecha|date:"d M Y H:i" }}
+    </li>
+    {% empty %}
+    <li>No tienes resultados registrados.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'lista_temas_ejercicios' %}" class="mt-4 inline-block text-blue-500 hover:underline">← Volver a los Temas</a>
+{% endblock %}

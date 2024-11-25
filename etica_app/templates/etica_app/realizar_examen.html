@@ -1,0 +1,30 @@
+<!-- templates/etica_app/realizar_examen.html -->
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}{{ tema.titulo }} - Examen{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Examen: {{ tema.titulo }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% if preguntas %}
+        {% for pregunta in preguntas %}
+        <div class="mb-6">
+            <p class="mb-2 font-semibold">{{ forloop.counter }}. {{ pregunta.texto }}</p>
+            {% for opcion in pregunta.opciones.all %}
+            <div>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="{{ pregunta.id }}" value="{{ opcion.id }}" class="form-radio">
+                    <span class="ml-2">{{ opcion.texto }}</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay preguntas disponibles para este tema.</p>
+    {% endif %}
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Enviar Respuestas</button>
+</form>
+{% endblock %}

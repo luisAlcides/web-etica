@@ -10,4 +10,9 @@ urlpatterns = [
     path('temas/<int:tema_id>/', views.detalle_tema, name='detalle_tema'),
     path('temas/<int:tema_id>/editar/', views.editar_tema, name='editar_tema'),
     path('temas/<int:tema_id>/eliminar/', views.eliminar_tema, name='eliminar_tema'),
+    path('buscar/', views.buscar_temas, name='buscar_temas'),
+    path('ejercicios/', views.lista_temas_ejercicios, name='lista_temas_ejercicios'),
+    path('ejercicios/tema/<int:tema_id>/', views.realizar_examen, name='realizar_examen'),
+    path('resultados/', views.ver_resultados, name='ver_resultados'),
+
 ]
