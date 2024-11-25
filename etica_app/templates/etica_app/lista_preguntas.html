@@ -1,0 +1,35 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Preguntas{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Gestión de Preguntas</h1>
+<a href="{% url 'crear_pregunta' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4 inline-block">Crear Nueva Pregunta</a>
+<table class="min-w-full bg-white">
+    <thead>
+        <tr>
+            <th class="py-2 px-4 border-b">ID</th>
+            <th class="py-2 px-4 border-b">Tema</th>
+            <th class="py-2 px-4 border-b">Texto</th>
+            <th class="py-2 px-4 border-b">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pregunta in preguntas %}
+        <tr>
+            <td class="py-2 px-4 border-b">{{ pregunta.id }}</td>
+            <td class="py-2 px-4 border-b">{{ pregunta.tema.titulo }}</td>
+            <td class="py-2 px-4 border-b">{{ pregunta.texto }}</td>
+            <td class="py-2 px-4 border-b">
+                <a href="{% url 'editar_pregunta' pregunta.id %}" class="text-yellow-500 hover:text-yellow-700">Editar</a> |
+                <a href="{% url 'eliminar_pregunta' pregunta.id %}" class="text-red-500 hover:text-red-700">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="py-2 px-4">No hay preguntas disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

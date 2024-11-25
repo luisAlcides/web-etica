@@ -1,0 +1,31 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Editar Pregunta{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Editar Pregunta</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ pregunta_form.as_p }}
+    <h2 class="text-2xl font-semibold mt-4 mb-2">Opciones</h2>
+    {{ formset.management_form }}
+    <table>
+        {% for form in formset %}
+        <tr>
+            <td>
+                {{ form.texto.label_tag }} {{ form.texto }}
+            </td>
+            <td>
+                {{ form.es_correcta.label_tag }} {{ form.es_correcta }}
+            </td>
+            <td>
+                {{ form.DELETE }}
+                <label for="{{ form.prefix }}-DELETE">Eliminar</label>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Guardar Cambios</button>
+    <a href="{% url 'lista_preguntas' %}" class="ml-4 text-gray-600 hover:text-gray-800">Cancelar</a>
+</form>
+{% endblock %}

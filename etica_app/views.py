@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Tema, Pregunta, Opcion, Resultado, Contenido, Ejercicio
-from .forms import TemaForm
+from .forms import TemaForm, PreguntaForm, OpcionForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 import markdown
 from django import template
@@ -8,6 +8,9 @@ from django.utils.safestring import mark_safe
 from django.db.models import Q
 import bleach
 from django.contrib.auth.decorators import login_required
+from django.forms import inlineformset_factory
+from django.utils import timezone
+
 
 
 def index(request):
@@ -111,7 +114,6 @@ def lista_temas_ejercicios(request):
     return render(request, 'etica_app/lista_temas_ejercicios.html', {'temas': temas})
 
 
-@login_required
 def realizar_examen(request, tema_id):
     tema = get_object_or_404(Tema, id=tema_id)
     preguntas = tema.preguntas.all()
@@ -131,18 +133,96 @@ def realizar_examen(request, tema_id):
 
         # Guardar el resultado
         Resultado.objects.create(usuario=request.user, tema=tema, puntaje=porcentaje)
-
         return render(request, 'etica_app/resultado_examen.html', {
             'tema': tema,
             'puntaje': puntaje,
             'total_preguntas': total_preguntas,
-            'porcentaje': porcentaje
+            'porcentaje': porcentaje,
         })
 
     else:
         return render(request, 'etica_app/realizar_examen.html', {'tema': tema, 'preguntas': preguntas})
 
-@login_required
+def lista_preguntas(request):
+    preguntas = Pregunta.objects.all()
+    return render(request, 'etica_app/lista_preguntas.html', {'preguntas': preguntas})
+
+
 def ver_resultados(request):
     resultados = Resultado.objects.filter(usuario=request.user).order_by('-fecha')
     return render(request, 'etica_app/ver_resultados.html', {'resultados': resultados})
+
+@user_passes_test(es_admin)
+def crear_pregunta(request):
+    OpcionFormSet = inlineformset_factory(Pregunta, Opcion, form=OpcionForm, extra=4, can_delete=False)
+    if request.method == 'POST':
+        pregunta_form = PreguntaForm(request.POST)
+        formset = OpcionFormSet(request.POST)
+        if pregunta_form.is_valid() and formset.is_valid():
+            pregunta = pregunta_form.save()
+            opciones = formset.save(commit=False)
+            for opcion in opciones:
+                opcion.pregunta = pregunta
+                opcion.save()
+            return redirect('lista_preguntas')
+    else:
+        pregunta_form = PreguntaForm()
+        formset = OpcionFormSet()
+    return render(request, 'etica_app/crear_pregunta.html', {'pregunta_form': pregunta_form, 'formset': formset})
+
+
+@user_passes_test(es_admin)
+def editar_pregunta(request, pregunta_id):
+    pregunta = get_object_or_404(Pregunta, id=pregunta_id)
+    OpcionFormSet = inlineformset_factory(Pregunta, Opcion, form=OpcionForm, extra=0, can_delete=True)
+    if request.method == 'POST':
+        pregunta_form = PreguntaForm(request.POST, instance=pregunta)
+        formset = OpcionFormSet(request.POST, instance=pregunta)
+        if pregunta_form.is_valid() and formset.is_valid():
+            pregunta_form.save()
+            formset.save()
+            return redirect('lista_preguntas')
+    else:
+        pregunta_form = PreguntaForm(instance=pregunta)
+        formset = OpcionFormSet(instance=pregunta)
+    return render(request, 'etica_app/editar_pregunta.html', {'pregunta_form': pregunta_form, 'formset': formset, 'pregunta': pregunta})
+
+
+@user_passes_test(es_admin)
+def eliminar_pregunta(request, pregunta_id):
+    pregunta = get_object_or_404(Pregunta, id=pregunta_id)
+    if request.method == 'POST':
+        pregunta.delete()
+        return redirect('lista_preguntas')
+    return render(request, 'etica_app/eliminar_pregunta.html', {'pregunta': pregunta})
+
+
+def ejercicios(request):
+    preguntas = Pregunta.objects.all()
+
+    if request.method == 'POST':
+        puntaje = 0
+        total_preguntas = preguntas.count()
+
+        for pregunta in preguntas:
+            opcion_id = request.POST.get(str(pregunta.id))
+            if opcion_id:
+                opcion_seleccionada = Opcion.objects.get(id=opcion_id)
+                if opcion_seleccionada.es_correcta:
+                    puntaje += 1
+
+        porcentaje = int((puntaje / total_preguntas) * 100)
+
+        fecha = timezone.now()
+
+
+        return render(request, 'etica_app/resultado_examen.html', {
+            'puntaje': puntaje,
+            'total_preguntas': total_preguntas,
+            'porcentaje': porcentaje,
+            'fecha': fecha
+
+        })
+    else:
+        return render(request, 'etica_app/ejercicios.html', {'preguntas': preguntas})
+

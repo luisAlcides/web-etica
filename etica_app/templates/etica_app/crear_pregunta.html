@@ -1,0 +1,99 @@
+{% extends 'etica_app/base.html' %}
+{% load static %}
+{% load extra_tags %}
+
+
+{% block titulo %}Crear Pregunta{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Crear Nueva Pregunta</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <!-- Sección de la Pregunta -->
+    <div class="mb-8 bg-white p-6 rounded-lg shadow">
+        {{ pregunta_form.non_field_errors }}
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">{{ pregunta_form.tema.label }}</label>
+            {{ pregunta_form.tema|add_class:"w-full border border-gray-300 p-2 rounded" }}
+            {{ pregunta_form.tema.errors }}
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">{{ pregunta_form.texto.label }}</label>
+            {{ pregunta_form.texto|add_class:"w-full border border-gray-300 p-2 rounded" }}
+            {{ pregunta_form.texto.errors }}
+        </div>
+    </div>
+
+    <!-- Sección de Opciones -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Opciones</h2>
+        {{ formset.management_form }}
+        <div id="opciones">
+            {% for form in formset %}
+            <div class="mb-4 bg-white p-4 rounded-lg shadow relative opcion-form">
+                {{ form.non_field_errors }}
+                <div class="mb-2">
+                    <label class="block text-gray-700 font-semibold mb-1">{{ form.texto.label }}</label>
+                    {{ form.texto|add_class:"w-full border border-gray-300 p-2 rounded" }}
+                    {{ form.texto.errors }}
+                </div>
+                <div class="flex items-center mb-2">
+                    {{ form.es_correcta|add_class:"h-4 w-4 text-blue-600" }}
+                    <label for="{{ form.es_correcta.id_for_label }}" class="ml-2 text-gray-700">Es Correcta</label>
+                    {{ form.es_correcta.errors }}
+                </div>
+                {% if form.instance.pk %}
+                <div class="absolute top-2 right-2">
+                    {{ form.DELETE }}
+                    <label for="{{ form.DELETE.id_for_label }}" class="text-red-500 hover:text-red-700 cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-option" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Añadir Opción
+        </button>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+            Guardar
+        </button>
+        <a href="{% url 'lista_preguntas' %}" class="text-gray-600 hover:text-gray-800">
+            Cancelar
+        </a>
+    </div>
+</form>
+
+<!-- Scripts para Añadir Opciones Dinámicamente -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var formIdx = {{ formset.forms|length }};
+        $('#add-option').click(function () {
+            $('#opciones').append(`
+                <div class="mb-4 bg-white p-4 rounded-lg shadow relative opcion-form">
+                    <div class="mb-2">
+                        <label class="block text-gray-700 font-semibold mb-1" for="id_opcion_set-`+formIdx+`-texto">Texto:</label>
+                        <input type="text" name="opcion_set-`+formIdx+`-texto" class="w-full border border-gray-300 p-2 rounded" id="id_opcion_set-`+formIdx+`-texto">
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" name="opcion_set-`+formIdx+`-es_correcta" class="h-4 w-4 text-blue-600" id="id_opcion_set-`+formIdx+`-es_correcta">
+                        <label for="id_opcion_set-`+formIdx+`-es_correcta" class="ml-2 text-gray-700">Es Correcta</label>
+                    </div>
+                    <input type="hidden" name="opcion_set-`+formIdx+`-DELETE" id="id_opcion_set-`+formIdx+`-DELETE">
+                </div>
+            `);
+            $('#id_opcion_set-TOTAL_FORMS').val(++formIdx);
+        });
+    });
+</script>
+{% endblock %}

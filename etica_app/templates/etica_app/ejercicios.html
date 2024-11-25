@@ -4,15 +4,40 @@
 {% block titulo %}Ejercicios - Clase de Ética{% endblock %}
 
 {% block contenido %}
-<h1 class="text-2xl font-bold mb-4">Ejercicios</h1>
-<form method="post">
-    {% csrf_token %}
-    {% for ejercicio in ejercicios %}
-    <div class="mb-6">
-        <p class="mb-2 font-semibold">{{ forloop.counter }}. {{ ejercicio.pregunta }}</p>
-        <input type="text" name="{{ ejercicio.id }}" class="border p-2 w-full" required>
-    </div>
-    {% endfor %}
-    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Enviar Respuestas</button>
-</form>
+<!-- Contenedor Principal -->
+<div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Título -->
+    <h1 class="text-3xl font-bold mb-6 text-center text-primary">Ejercicios</h1>
+
+    <!-- Formulario de Ejercicios -->
+    <form method="post">
+        {% csrf_token %}
+        {% if preguntas %}
+            {% for pregunta in preguntas %}
+            <!-- Sección de Pregunta -->
+            <div class="mb-8">
+                <p class="mb-4 font-semibold text-lg">{{ forloop.counter }}. {{ pregunta.texto }}</p>
+                <!-- Opciones -->
+                <div class="space-y-2">
+                    {% for opcion in pregunta.opciones.all %}
+                    <label class="flex items-center bg-gray-100 p-3 rounded hover:bg-gray-200 cursor-pointer">
+                        <input type="radio" name="{{ pregunta.id }}" value="{{ opcion.id }}" class="form-radio h-5 w-5 text-blue-600">
+                        <span class="ml-3 text-gray-800">{{ opcion.texto }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Botón Enviar Respuestas -->
+            <div class="text-center">
+                <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition duration-200">
+                    Enviar Respuestas
+                </button>
+            </div>
+        {% else %}
+            <!-- Mensaje si no hay preguntas -->
+            <p class="text-center text-gray-600">No hay ejercicios disponibles en este momento.</p>
+        {% endif %}
+    </form>
+</div>
 {% endblock %}

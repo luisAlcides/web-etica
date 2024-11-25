@@ -1,0 +1,13 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Eliminar Pregunta{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Eliminar Pregunta</h1>
+<p>¿Estás seguro de que deseas eliminar la pregunta "<strong>{{ pregunta.texto }}</strong>"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
+    <a href="{% url 'lista_preguntas' %}" class="ml-4 text-gray-600 hover:text-gray-800">Cancelar</a>
+</form>
+{% endblock %}
