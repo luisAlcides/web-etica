@@ -1,0 +1,19 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Iniciar Sesión{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Iniciar Sesión</h1>
+<form method="post" class="max-w-md mx-auto bg-white shadow rounded-lg p-6">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="username" class="block text-gray-700">Nombre de Usuario:</label>
+        <input type="text" name="username" id="username" required class="border p-2 w-full">
+    </div>
+    <div class="mb-4">
+        <label for="password" class="block text-gray-700">Contraseña:</label>
+        <input type="password" name="password" id="password" required class="border p-2 w-full">
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Iniciar Sesión</button>
+</form>
+{% endblock %}

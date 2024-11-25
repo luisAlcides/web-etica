@@ -1,0 +1,13 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Eliminar Tema{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-6">Eliminar Tema</h1>
+<p class="mb-6">¿Estás seguro de que deseas eliminar el tema "<strong>{{ tema.titulo }}</strong>"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
+    <a href="{% url 'detalle_tema' tema.id %}" class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-2">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- templates/etica_app/index.html -->
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Inicio - Clase de Ética{% endblock %}
+
+{% block contenido %}
+<h1 class="text-3xl font-bold mb-4">Bienvenido a la Clase de Ética</h1>
+<ul class="list-disc pl-5">
+    {% for contenido in contenidos %}
+    <li class="mb-2">
+        <a href="{% url 'detalle_contenido' contenido.id %}" class="text-blue-500 hover:underline">{{ contenido.titulo }}</a>
+    </li>
+    {% endfor %}
+</ul>
+<div class="mt-4">
+    <a href="{% url 'lista_ejercicios' %}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Ir a Ejercicios</a>
+    <a href="{% url 'lista_temas' %}" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 ml-2">Ver Temas del Blog</a>
+</div>
+{% endblock %}

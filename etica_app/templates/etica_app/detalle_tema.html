@@ -1,0 +1,22 @@
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}{{ tema.titulo }} - Blog{% endblock %}
+
+{% block contenido %}
+<article class="max-w-3xl mx-auto bg-white shadow rounded-lg overflow-hidden">
+    <div class="p-6">
+        <h1 class="text-4xl font-bold mb-4">{{ tema.titulo }}</h1>
+        <p class="text-gray-600 text-sm mb-6">Publicado el {{ tema.creado_en|date:"d M Y H:i" }}</p>
+        <div class="prose">
+            {{ tema.contenido|linebreaks }}
+        </div>
+        {% if user.is_staff %}
+        <div class="mt-6 flex space-x-4">
+            <a href="{% url 'editar_tema' tema.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
+            <a href="{% url 'eliminar_tema' tema.id %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</a>
+        </div>
+        {% endif %}
+    </div>
+</article>
+<a href="{% url 'lista_temas' %}" class="mt-6 inline-block text-blue-500 hover:underline">← Volver a la Lista de Temas</a>
+{% endblock %}

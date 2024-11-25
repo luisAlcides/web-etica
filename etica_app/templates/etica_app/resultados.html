@@ -1,0 +1,24 @@
+<!-- templates/etica_app/resultados.html -->
+{% extends 'etica_app/base.html' %}
+
+{% block titulo %}Resultados - Clase de Ética{% endblock %}
+
+{% block contenido %}
+<h1 class="text-2xl font-bold mb-4">Resultados</h1>
+<ul class="list-none">
+    {% for ejercicio, respuesta_usuario, correcta in respuestas %}
+    <li class="mb-4 p-4 border {{ 'bg-green-100' if correcta else 'bg-red-100' }}">
+        <p><strong>Pregunta {{ forloop.counter }}:</strong> {{ ejercicio.pregunta }}</p>
+        <p><strong>Tu Respuesta:</strong> {{ respuesta_usuario }}</p>
+        <p><strong>Estado:</strong> 
+            {% if correcta %}
+            <span class="text-green-700 font-semibold">Correcta</span>
+            {% else %}
+            <span class="text-red-700 font-semibold">Incorrecta</span>
+            {% endif %}
+        </p>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'lista_ejercicios' %}" class="mt-4 inline-block text-blue-500 hover:underline">Volver a Ejercicios</a>
+{% endblock %}
