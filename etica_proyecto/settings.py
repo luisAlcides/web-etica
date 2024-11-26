@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 
-ALLOWED_HOSTS = ['railway.app', '127.0.0.1']
+ALLOWED_HOSTS = ['railway.app', '127.0.0.1', 'https://etica.up.railway.app/']
 
 
 # Application definition
