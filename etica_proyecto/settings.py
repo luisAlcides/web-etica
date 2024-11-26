@@ -85,7 +85,6 @@ WSGI_APPLICATION = 'etica_proyecto.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        engine='django.db.backends.postgresql_psycopg2',  # Especifica el ENGINE aquí
         default=os.environ.get('DATABASE_URL')
     )
 }
