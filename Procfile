@@ -1,0 +1,1 @@
+web: python manage.py collectstatic --noinput && gunicorn etica_proyecto.wsgi:application
