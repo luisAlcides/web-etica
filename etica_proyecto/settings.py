@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 
 import dj_database_url
+from django.template import Engine
 from dotenv import load_dotenv
 import os
 from decouple import config
@@ -86,10 +87,11 @@ WSGI_APPLICATION = 'etica_proyecto.wsgi.application'
 
 # Configuración de la base de datos con python-decouple y dj-database-url
 DATABASES = {
-    'default': dj_database_url.parse(
-        config('DATABASE_URL'),  # Obtiene la URL de la base de datos desde el archivo .env
-        engine='django.db.backends.postgresql'  # Especifica explícitamente el ENGINE
-    )
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+    ),
+    'engine': 'django.db.backends.postgresql',
 }
 
 
