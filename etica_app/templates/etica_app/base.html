@@ -43,9 +43,8 @@
                         <a href="{% url 'lista_temas' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Temas</a>
                         <a href="{% url 'ejercicios' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Ejercicios</a>
                         <a href="{% url 'bibliografia' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Bibliografia</a>
-
+                        {% if user.is_staff %}
                         <a href="{% url 'lista_preguntas' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Gestionar Preguntas</a>
-                      <!--  {% if user.is_staff %}-->
                         {% endif %}
                     </div>
                     <!-- Formulario de Búsqueda -->
