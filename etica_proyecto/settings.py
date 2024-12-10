@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'etica_proyecto.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL_PUBLIC')
+        default=os.environ.get('DATABASE_PUBLIC_URL')
     )
 }
 
