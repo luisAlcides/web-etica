@@ -17,6 +17,9 @@ def index(request):
     contenidos = Contenido.objects.all()
     return render(request, 'etica_app/index.html', {'contenidos': contenidos})
 
+def bibliografia(request):
+    return render(request, 'etica_app/bibliografia.html')
+
 def detalle_contenido(request, contenido_id):
     contenido = Contenido.objects.get(id=contenido_id)
     return render(request, 'etica_app/detalle_contenido.html', {'contenido': contenido})

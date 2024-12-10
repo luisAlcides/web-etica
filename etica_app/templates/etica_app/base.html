@@ -27,15 +27,14 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Logo y Nombre del Sitio -->
                 <div class="flex items-center">
-                    <a href="{% url 'index' %}" class="flex items-center text-2xl font-bold text-primary">
-                        <!-- Ícono o Logo -->
-                        <svg class="w-8 h-8 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <!-- (SVG del ícono o logo) -->
-                            <path d="M12 2L2 7l10 5 10-5-10-5zm0 11L2 8v11l10 5 10-5V8l-10 5z" />
-                        </svg>
-                        Clase de Ética
+                    <a href="{% url 'index' %}" class="flex items-center text-2xl font-bold text-primary space-x-2">
+                        <!-- Logo -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Logo_UNI_%281%29.png" alt="Logo" class="h-10 w-10 object-contain">
+                        <!-- Nombre del Sitio -->
+                        <span>Clase de Ética Profesional</span>
                     </a>
                 </div>
+
                 <!-- Menú Desktop -->
                 <div class="hidden md:flex items-center justify-between w-full">
                     <!-- Enlaces de Navegación -->
@@ -43,6 +42,7 @@
                         <a href="{% url 'index' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Inicio</a>
                         <a href="{% url 'lista_temas' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Temas</a>
                         <a href="{% url 'ejercicios' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Ejercicios</a>
+                        <a href="{% url 'bibliografia' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Bibliografia</a>
                         {% if user.is_staff %}
                         <a href="{% url 'lista_preguntas' %}" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Gestionar Preguntas</a>
                         {% endif %}
